@@ -4,6 +4,8 @@
 * Savion Sample
 * Queue Class
 * Description: 
+* Handles all queue related actions: enqueue, dequeue, check if full/empty,
+* print queue contents, and show all specific queue data
 *
 ******************************************************************************/
 
@@ -27,19 +29,46 @@ class Queue
 		}
 			
 		queue = new String[arrSize];
-		front = -1;
-		back = -1;
+		front = 0;
+		back = 0;
 		numEntries = 0;
 	}
 	
 	/**
-	 * Check to see if queue is empty
+	 * Adds a string to the queue if there is space
+	 * Note: position wraps back to 0 if the end of the queue is reached
 	 * 
-	 * @return: true if empty, false otherwise
+	 * @param s: the string that will be queued
 	 */
-	public boolean isEmpty()
+	public void enqueue(String s)
 	{
-		return numEntries == 0;
+		if (!isFull())
+		{
+			numEntries++;
+			queue[back] = s;
+			back++;
+			back = back % size;
+		}
+	}
+	
+	/**
+	 * Removes a string from the queue if it is not already empty
+	 * Note: position wraps back to 0 if the end of the queue is reached
+	 */
+	public String dequeue()
+	{
+		if (!isEmpty())
+		{
+			numEntries--;
+			String temp = queue[front];
+			front++;
+			front = front % size;
+			return temp;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	/**
@@ -53,82 +82,37 @@ class Queue
 	}
 	
 	/**
-	 * Adds a string to the queue if there is space
+	 * Check to see if queue is empty
 	 * 
-	 * @param s: the string that will be queued
+	 * @return: true if empty, false otherwise
 	 */
-	public void enqueue(String s)
+	public boolean isEmpty()
 	{
-		if (!isFull() && numEntries <= size)
-		{
-			back = (back + 1) % size;
-			queue[back] = s;
-		}
-		numEntries++;
-	}
-	
-	/**
-	 * Removes a string from the queue if it is not already empty
-	 */
-	public String dequeue()
-	{
-		if (!isEmpty())
-		{
-			String temp = queue[front + 1];
-			front++;
-			numEntries--;
-			return temp;
-		}
-		else
-		{
-			numEntries--;
-			return null;
-		}
+		return numEntries == 0;
 	}
 	
 	/**
 	 * Converts the queue to a string and returns it
+	 * Note: position wraps back to 0 if the end of the queue is reached
 	 */
-/*	public String toString()
-	{
-		String queueAsString = "";
-		for(int i = front; i >= 0; i--)
-		{
-			queueAsString = queueAsString + i + " : " + queue[i] + '\n';
-		}
-		return queueAsString;
-	}*/
-	
 	public String toString()
 	{
 		String queueAsString = "";
 		
-		if (back > front)
+		int count = front;
+		for (int i = 0; i < numEntries; i++)
 		{
-			for (int i = front + 1; i <= back; i++)
-			{
-				queueAsString += queue[i] + " ";
-			}
-		}
-		else
-		{
-			String[] newArr = new String[size];
-			rearrangeArrayAtBeginning(newArr);
-			
-			for (int i = 0; i < size; i++)
-			{
-				if (newArr[i] != null)
-				{	
-					queueAsString += queue[i] + " ";
-				}
-			}
+			count = count % size;
+			queueAsString += queue[count] + " ";
+			count++;
 		}
 		return queueAsString;
 	}
 	
 	/**
 	 * prints the queue from position 0 to length - 1, the position of the
-	 * front and back of the queue, and the length of the queue
+	 * front and back of the queue, and the length of the queue.
+	 * Note: the position of the front is inclusive, and exclusive for the back
 	 */
 	public String getDataAsString()
 	{
@@ -145,22 +129,4 @@ class Queue
 		return dataAsString;
 	}
 	
-	/**
-	 * recreates a temporary queue without any wrapping
-	 * 
-	 * @param newArr: the temporary rearranged queue
-	 */
-	private void rearrangeArrayAtBeginning(String[] newArr)
-	{
-		int count = 0;
-		int reset = front + 1;
-
-		for (int i = 0; i < numEntries; i++)
-		{
-			newArr[count] = queue[reset];
-			reset++;
-			reset = reset % (size);
-			count++;
-		}
-	}
-}
+}                   
