@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class QueueMain {
 	
 	private static final Scanner SC = new Scanner(System.in);
-	private static final int SIZE = 3;
+	private static final int SIZE = 4;
 
 	public static void main(String[] args) {
 		
@@ -88,7 +88,7 @@ public class QueueMain {
 		else
 		{
 			System.out.println("Please enter the word you want to queue");
-			String userQueueWord = SC.nextLine();
+			String userQueueWord = SC.nextLine();	
 			q1.enqueue(userQueueWord);
 			System.out.println(userQueueWord + " enqueued onto q1");
 		}
@@ -118,7 +118,7 @@ public class QueueMain {
 	{
 		System.out.println();
 		
-		System.out.println("The commands are:");
+		System.out.println("Here are the commands:");
 		System.out.println("e - enqueue");
 		System.out.println("d - dequeue");
 		System.out.println("f - check if full");

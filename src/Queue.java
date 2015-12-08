@@ -21,7 +21,7 @@ class Queue
 	{
 		if (arrSize < 0)
 		{
-			arrSize = 0;
+			numEntries = 0;
 		}
 		else
 		{
